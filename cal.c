@@ -3,9 +3,8 @@
 
 int main() 
 {
-	char TIPS_T[] = "EXPR: %s%cRESULT: %d%c";
-	char TIPS_F[] = "EXPR: %s%cRESULT: error%c";
-	char expr[] = "1+1*3#";
+	char TIPS_T[] = "EXPR: %s RESULT: %d\n";
+	char expr[] = "1+1*3+5-6#";
 
 	char post[1000];
 	char ss[1000];
@@ -20,54 +19,72 @@ int main()
 	t = 1;
 	i = 0;
 	ch = expr[i];
-	i += 1;
-	while (ch != '#') {
-		if (ch == '+' || ch == '-') {
-			while (top != 0 && ss[top] != '(') {
+	i = i + 1;
+	while (ch != '#') 
+	{
+		if (ch == '+' || ch == '-') 
+		{
+			while (top != 0 && ss[top] != '(')
+			{
 				post[t] = ss[top];
-				top -= 1;
-				t += 1;
+				top = top - 1;
+				t = t + 1;
 			}
-			top += 1;
+			top = top + 1;
 			ss[top] = ch;
 
-		} else if (ch == '*' || ch == '/') {
-			while (ss[top] == '*'|| ss[top] == '/') {
+		} 
+		else if (ch == '*' || ch == '/') 
+		{
+			while (ss[top] == '*'|| ss[top] == '/') 
+			{
 				post[t] = ss[top];
-				top -= 1;
-				t += 1;
+				top = top - 1;
+				t = t + 1;
 			}
-			top += 1;
+			top = top + 1;
 			ss[top] = ch;
-		} else if (ch == '(') {
-			top += 1;
+		} 
+		else if (ch == '(') 
+		{
+			top = top + 1;
 			ss[top] = ch;
-		} else if (ch == ')') {
-			while (ss[top] != '(') {
+		} 
+		else if (ch == ')') 
+		{
+			while (ss[top] != '(') 
+			{
 				post[t] = ss[top];
-				top -= 1;
-				t += 1;
+				top = top - 1;
+				t = t + 1;
 			}
-			top -= 1;
-		} else if (ch == ' ') {
+			top =top - 1;
+		} 
+		else if (ch == ' ')
+		{
 			z = 1;
-		} else {
-			while (isdigit(ch) || ch == '.') {
+		} 
+		else 
+		{
+			while (isdigit(ch) || ch == '.') 
+			{
 				post[t] = ch;
-				t += 1;
+				t = t + 1;
 				ch = expr[i];
-				i += 1;
+				i = i + 1;
 			}
-			i -= 1;
+			i = i - 1;
 			post[t] = ' ';
-			t += 1;
+			t = t + 1;
 		}
 		ch = expr[i];
-		i += 1;
-	} while (top!= 0) {
+		i = i + 1;
+	}
+	while (top!= 0) 
+	{
 		post[t] = ss[top];
-		t += 1;
-		top -= 1;
+		t = t + 1;
+		top = top - 1;
 	}
 	post[t] = ' ';
 	int newstack[100];
@@ -78,41 +95,69 @@ int main()
 	t=t+1;
 	char temp;
 	while (ch!= ' ' && error == 0) {
-		if (ch == '+') {
-			newstack[top-1] = newstack[top-1] + newstack[top];
-			top -= 1;
-		} else if (ch == '-') {
-			newstack[top-1] = newstack[top-1] - newstack[top];
-			top -= 1;
-		} else if (ch == '*') {
-			newstack[top-1] = newstack[top-1] * newstack[top];
-			top -= 1;
-		} else if(ch == '/') {
+		if (ch == '+') 
+		{
+			int tempTop;
+			tempTop = top - 1;
+			newstack[tempTop] = newstack[tempTop] + newstack[top];
+			top = top - 1;
+		} 
+		else if (ch == '-') 
+		{
+			int tempTop;
+			tempTop = top - 1;
+			newstack[tempTop] = newstack[tempTop] - newstack[top];
+			top = top - 1;
+		} 
+		else if (ch == '*')
+		{
+			int tempTop;
+			tempTop = top - 1;
+			newstack[tempTop] = newstack[tempTop] * newstack[top];
+			top = top - 1;
+		}
+		else if(ch == '/') 
+		{
 			if (newstack[top] != 0)
-				newstack[top-1] = newstack[top-1] / newstack[top];
+			{
+				int tempTop;
+				tempTop = top - 1;
+				newstack[tempTop] = newstack[tempTop] / newstack[top];
+			}
 			else
+			{
 				error = 1;
-			top -= 1;
-		} else {
+			}
+			top = top - 1;
+		} 
+		else 
+		{
 			i = 0;
-			while (isdigit(ch) || ch == '.') {
+			while (isdigit(ch) || ch == '.') 
+			{
 				newstr[i] = ch;
-				i += 1;
+				i = i + 1;
 				ch = post[t];
-				t += 1;
+				t = t + 1;
 			}
 			temp = 0;
 			newstr[i] = temp;
-			top += 1;
+			top = top + 1;
 			newstack[top] = atoi(newstr);
 		}
 		ch = post[t];
-		t += 1;
+		t = t + 1;
 	}
 	
+	int result;
+	result = newstack[top];
 	if(error == 0)
-		printf(TIPS_T, expr, 10, newstack[top], 10);
+	{
+		printf(TIPS_T, expr, result);
+	}
 	else
-		printf(TIPS_F, expr, 10, 10);
+	{
+		printf("error\n");
+	}
 	return 0;
 }
