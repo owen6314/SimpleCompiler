@@ -1,5 +1,7 @@
 int main(){
-    int i = 1;
-    printf(a, b, c);
+    int i;
+    while(i != 0) {
+        int i[x];
+    }
     return 0;
 }
