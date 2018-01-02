@@ -188,6 +188,24 @@ class SimpleCListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by SimpleCParser#arrayDeclareStat.
+    def enterArrayDeclareStat(self, ctx:SimpleCParser.ArrayDeclareStatContext):
+        pass
+
+    # Exit a parse tree produced by SimpleCParser#arrayDeclareStat.
+    def exitArrayDeclareStat(self, ctx:SimpleCParser.ArrayDeclareStatContext):
+        pass
+
+
+    # Enter a parse tree produced by SimpleCParser#otherDeclareStat.
+    def enterOtherDeclareStat(self, ctx:SimpleCParser.OtherDeclareStatContext):
+        pass
+
+    # Exit a parse tree produced by SimpleCParser#otherDeclareStat.
+    def exitOtherDeclareStat(self, ctx:SimpleCParser.OtherDeclareStatContext):
+        pass
+
+
     # Enter a parse tree produced by SimpleCParser#assignStat.
     def enterAssignStat(self, ctx:SimpleCParser.AssignStatContext):
         pass

@@ -109,6 +109,16 @@ class SimpleCVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by SimpleCParser#arrayDeclareStat.
+    def visitArrayDeclareStat(self, ctx:SimpleCParser.ArrayDeclareStatContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SimpleCParser#otherDeclareStat.
+    def visitOtherDeclareStat(self, ctx:SimpleCParser.OtherDeclareStatContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by SimpleCParser#assignStat.
     def visitAssignStat(self, ctx:SimpleCParser.AssignStatContext):
         return self.visitChildren(ctx)
