@@ -1,3 +1,7 @@
+def atoi(str):
+    return int(''.join(str[:str.index(0)]))
+
+
 def main():
     TIPS_T = "EXPR: %s RESULT: %d\n"
     expr = "1+1*3+5-6#"
@@ -37,7 +41,7 @@ def main():
         elif ch == ' ':
             z = 1
         else:
-            while ch or ch == '.':
+            while ch.isdigit() or ch == '.':
                 post[t] = ch
                 t = t + 1
                 ch = expr[i]
@@ -85,7 +89,7 @@ def main():
             top = top - 1
         else:
             i = 0
-            while ch or ch == '.':
+            while ch.isdigit() or ch == '.':
                 newstr[i] = ch
                 i = i + 1
                 ch = post[t]
@@ -93,7 +97,7 @@ def main():
             temp = 0
             newstr[i] = temp
             top = top + 1
-            newstack[top] = newstr
+            newstack[top] = int("".join(newstr[:newstr.index(0)]))
         ch = post[t]
         t = t + 1
     
@@ -104,3 +108,5 @@ def main():
         print("error\n")
     return 0
 
+
+main()

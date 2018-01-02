@@ -15,7 +15,6 @@ int main()
 	int z;
 	int error = 0;
 	int top = 0;
-	sum = strlen(expr);
 	t = 1;
 	i = 0;
 	ch = expr[i];

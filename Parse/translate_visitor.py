@@ -126,9 +126,11 @@ class TranslateVisitor(SimpleCVisitor):
     
     # Visit a parse tree produced by SimpleCParser#atoiFunc.
     def visitAtoiFunc(self, ctx: SimpleCParser.AtoiFuncContext):
-        self.emit("atoi(")
+        self.emit('int("".join(')
         self.visit(ctx.getChild(2))
-        self.emit(")")
+        self.emit('[:')
+        self.visit(ctx.getChild(2))
+        self.emit('.index(0)]))')
         return
     
     # Visit a parse tree produced by SimpleCParser#isdigitFunc.
