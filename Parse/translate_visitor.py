@@ -12,6 +12,12 @@ from SimpleCVisitor import SimpleCVisitor
 
 
 class TranslateVisitor(SimpleCVisitor):
+  indentation = 0
+  
+  def print_indentation(self):
+    for i in range(self.indentation):
+      print("    ", end="")
+  
   # Visit a parse tree produced by SimpleCParser#start.
   def visitStart(self, ctx: SimpleCParser.StartContext):
     return self.visitChildren(ctx)
