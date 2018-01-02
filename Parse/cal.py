@@ -1,26 +1,11 @@
-def atoi(str):
-    i = 0
-    while(str[i] != 0):
-        i = i + 1
-    temp_str = str[:i]
-    return int(''.join(temp_str))
-
 def main():
-    
-    
-    
-    expr = "1+1*3/2+(9-1*2)#"
-    
-    post = [0] * 100
-    ss = [0] * 100
-    
-    
-    
-    
+    TIPS_T = "EXPR: %s RESULT: %d\n"
+    expr = "1+1*3+5-6#"
+    post = [None] * 1000
+    ss = [None] * 1000
     
     error = 0
     top = 0
-    sum = len(expr)
     t = 1
     i = 0
     ch = expr[i]
@@ -31,16 +16,13 @@ def main():
                 post[t] = ss[top]
                 top = top - 1
                 t = t + 1
-            
             top = top + 1
             ss[top] = ch
-        
         elif ch == '*' or ch == '/':
             while ss[top] == '*' or ss[top] == '/':
                 post[t] = ss[top]
                 top = top - 1
                 t = t + 1
-            
             top = top + 1
             ss[top] = ch
         elif ch == '(':
@@ -51,31 +33,27 @@ def main():
                 post[t] = ss[top]
                 top = top - 1
                 t = t + 1
-            
-            top = top -1
+            top = top - 1
         elif ch == ' ':
             z = 1
         else:
-            while ch.isdigit() or ch == '.':
+            while ch or ch == '.':
                 post[t] = ch
                 t = t + 1
                 ch = expr[i]
                 i = i + 1
-            
             i = i - 1
             post[t] = ' '
             t = t + 1
-        
         ch = expr[i]
         i = i + 1
     while top != 0:
         post[t] = ss[top]
         t = t + 1
         top = top - 1
-    
     post[t] = ' '
-    newstack = [0] * 100
-    newstr = [''] * 100
+    newstack = [None] * 100
+    newstr = [None] * 100
     t = 1
     top = 0
     ch = post[t]
@@ -83,58 +61,46 @@ def main():
     
     while ch != ' ' and error == 0:
         if ch == '+':
-            newstack[top - 1] = newstack[top - 1] + newstack[top]
+            
+            tempTop = top - 1
+            newstack[tempTop] = newstack[tempTop] + newstack[top]
             top = top - 1
         elif ch == '-':
-            newstack[top - 1] = newstack[top - 1] - newstack[top]
+            
+            tempTop = top - 1
+            newstack[tempTop] = newstack[tempTop] - newstack[top]
             top = top - 1
         elif ch == '*':
-            newstack[top - 1] = newstack[top - 1] * newstack[top]
+            
+            tempTop = top - 1
+            newstack[tempTop] = newstack[tempTop] * newstack[top]
             top = top - 1
         elif ch == '/':
             if newstack[top] != 0:
-                newstack[top - 1] = newstack[top - 1] // newstack[top]
+                
+                tempTop = top - 1
+                newstack[tempTop] = newstack[tempTop] / newstack[top]
             else:
                 error = 1
             top = top - 1
         else:
             i = 0
-            while ch.isdigit() or ch == '.':
+            while ch or ch == '.':
                 newstr[i] = ch
                 i = i + 1
                 ch = post[t]
-                t += 1
-            
+                t = t + 1
             temp = 0
             newstr[i] = temp
             top = top + 1
-            newstack[top] = atoi(newstr)#int(''.join(newstr))
-        
+            newstack[top] = newstr
         ch = post[t]
         t = t + 1
     
+    result = newstack[top]
     if error == 0:
-        print(newstack[top])
+        print(TIPS_T % (expr, result,))
     else:
-        print('wrong')
-
-
-main()
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
+        print("error\n")
+    return 0
 
