@@ -10,7 +10,7 @@ def main(argv):
     lexer = SimpleCLexer(input)
     stream = CommonTokenStream(lexer)
     parser = SimpleCParser(stream)
-    tree = parser.function()
+    tree = parser.start()
     eval = TranslateVisitor()
     eval.visit(tree)
 
