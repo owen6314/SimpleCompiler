@@ -2,11 +2,16 @@ grammar SimpleC;
 
 start : (include)* function ;
 
-include : '#include' '<' ID '.' ID '>' ;
+include : '#include' '<' mID '.' mID '>' ;
 
-function : type ID '(' ')' '{' (stat | block)* '}' ;
+function : mType mID '(' ')' '{' content '}' ;
 
-type : 'int' | 'char' ;
+mType : 'int' | 'char' ;
+
+content : (stat|block) content
+        | (stat|block)
+        |
+        ;
 
 // block是需要加{}的if else while语句块
 block : ifBlock
@@ -15,14 +20,18 @@ block : ifBlock
 	  | whileBlock
 	  ;
 
-ifBlock : 'if' '(' expr (CONNECTOR expr)* ')' '{' (stat | block)* '}' ;
 
-elifBlock : 'else if' '(' expr (CONNECTOR expr)* ')' '{' (stat | block)* '}' ;
+ifBlock : 'if' '(' condition ')' '{' content '}' ;
 
-elseBlock : 'else' '{' (stat | block)* '}' ;
+elifBlock : 'else if' '(' condition ')' '{' content '}' ;
 
-whileBlock : 'while' '(' expr (CONNECTOR expr)* ')' '{' (stat | block)* '}' ;
+elseBlock : 'else' '{' content '}' ;
 
+whileBlock : 'while' '(' condition ')' '{' content '}' ;
+
+condition : expr mConnector condition
+          | expr
+          ;
 
 stat :  declareStat
 	 |  assignStat
@@ -31,13 +40,20 @@ stat :  declareStat
 	 ;
 
 // 可以出现在等式右边或判断条件中的表达式,包括三个标准库函数
-expr : ID('[' (INT|ID) ']')? OPERATOR ID('[' (INT|ID) ']')?
-	 | ID('[' (INT|ID) ']')? OPERATOR INT
-	 | ID('[' (INT|ID) ']')? OPERATOR CHAR
-	 | INT OPERATOR INT
+/*expr : mID('[' (mInt|mID) ']')? mOperator mID('[' (mInt|mID) ']')?
+	 | mID('[' (mInt|mID) ']')? mOperator mInt
+	 | mID('[' (mInt|mID) ']')? mOperator mChar
+	 | mInt mOperator mInt
 	 | exprFunc
+	 ;*/
+
+expr : (mID | mInt | mChar | mString | designator | exprFunc ) mOperator expr
+     | (mID | mInt | mChar | mString | designator | exprFunc )
 	 ;
 
+designator : mID '[' (mInt|mID) ']';
+
+arrayNoInit : mID '[' ']' ;
 
 exprFunc : strlenFunc
 		 | atoiFunc
@@ -45,39 +61,57 @@ exprFunc : strlenFunc
 		 ;
 
 // 在程序中用到的三个函数
-strlenFunc : 'strlen' '(' ID ')' ;
+strlenFunc : 'strlen' '(' mID ')' ;
 
-atoiFunc : 'atoi' '(' ID ')' ;
+atoiFunc : 'atoi' '(' mID ')' ;
 
-isdigitFunc : 'isdigit' '(' ID ')' ;
+isdigitFunc : 'isdigit' '(' mID ')' ;
 
 // 声明语句
 // 第四条：如int a[100]
 // 第五条: 如char a[100] = "hello"
-declareStat : type ID ';'
-			| type ID '=' ID ';'
-			| type ID '=' INT ';'
-			| type ID '[' (INT)? ']' ';'
-			| type ID '[' (INT)? ']' '=' STRING ';'
-			;
+//declareStat : mType mID ';'
+//			| mType mID '=' mID ';'
+//			| mType mID '=' mInt ';'
+//			| mType mID '[' (mInt)? ']' ';'
+//			| mType mID '[' (mInt)? ']' '=' mString ';'
+//			;
+
+declareStat : mType (mID|designator) ';'
+            | mType (mID|designator|arrayNoInit) '=' expr ';'
+            ;
 
 // 赋值语句
 // 后四条包括了数组中元素的赋值
-assignStat : ID '=' ID ';'
-		   | ID ('[' (INT|ID) ']')? '=' ID ('[' (INT|ID) ']')? ';'
-		   | ID ('[' (INT|ID) ']')? '=' INT ';'
-		   | ID ('[' (INT|ID) ']')? '=' CHAR ';'
-		   | ID ('[' (INT|ID) ']')? '=' expr ';'
-		   ;
+/*assignStat : mID '=' mID ';'
+		   | mID ('[' (mInt|mID) ']')? '=' mID ('[' (mInt|mID) ']')? ';'
+		   | mID ('[' (mInt|mID) ']')? '=' mInt ';'
+		   | mID ('[' (mInt|mID) ']')? '=' mChar ';'
+		   | mID ('[' (mInt|mID) ']')? '=' expr ';'
+		   ;*/
+
+assignStat : (mID | designator) '=' expr ';' ;
 
 // 返回语句
-returnStat : 'return' INT ';' ;
+returnStat : 'return' mInt ';' ;
 
 // 打印语句
 // 参数为字符串或多个变量
-printfStat : 'printf' '(' STRING ')' ';'
-           | 'printf' '(' ID (',' ID)* ')' ';'
+printfStat : 'printf' '(' mString ')' ';'
+           | 'printf' '(' mID (',' mID)* ')' ';'
            ;
+           
+mOperator : OPERATOR;
+
+mConnector : CONNECTOR;
+
+mInt : INT;
+
+mChar : CHAR;
+
+mString : STRING;
+
+mID : ID;
 
 // lexical rules
 
