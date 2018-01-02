@@ -32,20 +32,30 @@ class TranslateVisitor(SimpleCVisitor):
 
     # Visit a parse tree produced by SimpleCParser#function.
     def visitFunction(self, ctx: SimpleCParser.FunctionContext):
-        return self.visitChildren(ctx)
-
+        self.emit("def ")
+        self.visit(ctx.getChild(1))
+        self.emit("():\n")
+        self.indentation += 1
+        self.visit(ctx.getChild(5))
+        self.indentation -= 1
+        return
+    
     # Visit a parse tree produced by SimpleCParser#mType.
     def visitMType(self, ctx: SimpleCParser.MTypeContext):
         return self.visitChildren(ctx)
 
     # Visit a parse tree produced by SimpleCParser#content.
     def visitContent(self, ctx: SimpleCParser.ContentContext):
-        return self.visitChildren(ctx)
-
+        self.visitChildren(ctx)
+        return
+    
     # Visit a parse tree produced by SimpleCParser#block.
     def visitBlock(self, ctx: SimpleCParser.BlockContext):
-        return self.visitChildren(ctx)
-
+        self.indentation += 1
+        self.visitChildren(ctx)
+        self.indentation -= 1
+        return 
+    
     # Visit a parse tree produced by SimpleCParser#ifBlock.
     def visitIfBlock(self, ctx: SimpleCParser.IfBlockContext):
         self.emit("if ")
@@ -74,8 +84,11 @@ class TranslateVisitor(SimpleCVisitor):
 
     # Visit a parse tree produced by SimpleCParser#stat.
     def visitStat(self, ctx: SimpleCParser.StatContext):
-        return self.visitChildren(ctx)
-
+        self.print_indentation()
+        self.visitChildren(ctx)
+        self.emit("\n")
+        return
+    
     # Visit a parse tree produced by SimpleCParser#expr.
     def visitExpr(self, ctx: SimpleCParser.ExprContext):
         return self.visitChildren(ctx)
@@ -114,6 +127,7 @@ class TranslateVisitor(SimpleCVisitor):
 
     # Visit a parse tree produced by SimpleCParser#returnStat.
     def visitReturnStat(self, ctx: SimpleCParser.ReturnStatContext):
+        self.emit("return ")
         return self.visitChildren(ctx)
 
     # Visit a parse tree produced by SimpleCParser#printfStat.
@@ -125,7 +139,11 @@ class TranslateVisitor(SimpleCVisitor):
         else:
             self.emit("print(")
             self.visit(ctx.getChild(2))
-            self.emit("%")
+            self.emit(" % (")
+            for i in range (4, ctx.getChildCount() - 2, 2):
+                self.visit(ctx.getChild(i))
+                self.emit(',')
+            self.emit(")")
         return
 
     # Visit a parse tree produced by SimpleCParser#mOperator.

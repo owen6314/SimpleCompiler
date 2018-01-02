@@ -11,4 +11,7 @@ else if ( i == 2 ) {
 else {
     i = i + 3;
 }
+    int i = 1;
+    printf(a, b, c);
+    return 0;
 }
