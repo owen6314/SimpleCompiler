@@ -59,6 +59,9 @@ class TranslateVisitor(SimpleCVisitor):
     
     # Visit a parse tree produced by SimpleCParser#ifBlock.
     def visitIfBlock(self, ctx: SimpleCParser.IfBlockContext):
+        self.emit("if ")
+        self.visitChildren(ctx.getChild(2))
+        self.emit(" :\n")
         return self.visitChildren(ctx)
     
     # Visit a parse tree produced by SimpleCParser#elifBlock.
@@ -69,15 +72,18 @@ class TranslateVisitor(SimpleCVisitor):
     def visitElseBlock(self, ctx: SimpleCParser.ElseBlockContext):
         return self.visitChildren(ctx)
     
-    # Visit a parse tree produced by SimpleCParser#whileBlock.
+    # [Done] Visit a parse tree produced by SimpleCParser#whileBlock.
     def visitWhileBlock(self, ctx: SimpleCParser.WhileBlockContext):
-        return self.visitChildren(ctx)
+        self.emit("while ")
+        self.visitChildren(ctx.getChild(2))
+        self.emit(" :\n")
+        return
     
-    # [DONE] Visit a parse tree produced by SimpleCParser#condition.
+    # [Done] Visit a parse tree produced by SimpleCParser#condition.
     def visitCondition(self, ctx: SimpleCParser.ConditionContext):
         return self.visitChildren(ctx)
     
-    # [DONE] Visit a parse tree produced by SimpleCParser#stat.
+    # [Done] Visit a parse tree produced by SimpleCParser#stat.
     def visitStat(self, ctx: SimpleCParser.StatContext):
         self.print_indentation()
         self.visitChildren(ctx)
@@ -118,7 +124,7 @@ class TranslateVisitor(SimpleCVisitor):
     
     # [DONE] Visit a parse tree produced by SimpleCParser#declareStat.
     def visitDeclareStat(self, ctx: SimpleCParser.DeclareStatContext):
-        if(ctx.getChildCount() == 5):
+        if (ctx.getChildCount() == 5):
             self.visit(ctx.getChild(1))
             self.emit(" = ")
             self.visit(ctx.getChild(3))
@@ -148,7 +154,7 @@ class TranslateVisitor(SimpleCVisitor):
             self.emit("print(")
             self.visit(ctx.getChild(2))
             self.emit(" % (")
-            for i in range (4, ctx.getChildCount() - 2, 2):
+            for i in range(4, ctx.getChildCount() - 2, 2):
                 self.visit(ctx.getChild(i))
                 self.emit(',')
             self.emit("))")
@@ -160,6 +166,7 @@ class TranslateVisitor(SimpleCVisitor):
         return self.visitChildren(ctx)
     
     # [DONE] Visit a parse tree produced by SimpleCParser#mConnector.
+    
     def visitMConnector(self, ctx: SimpleCParser.MConnectorContext):
         if ctx.CONNECTOR().getText() == "||":
             self.emit("or")

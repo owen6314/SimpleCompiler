@@ -1,7 +1,6 @@
 int main(){
-    int i;
-    while(i != 0) {
-        int i[x];
+    int i = 1;
+    while(i != 5) {
+        i = i + 1;
     }
-    return 0;
 }
