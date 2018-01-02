@@ -17,6 +17,10 @@ class TranslateVisitor(SimpleCVisitor):
   def print_indentation(self):
     for i in range(self.indentation):
       print("    ", end="")
+      
+  def emit(self, *args):
+    for arg in args:
+      print(arg, end="")
   
   # Visit a parse tree produced by SimpleCParser#start.
   def visitStart(self, ctx: SimpleCParser.StartContext):
@@ -108,30 +112,42 @@ class TranslateVisitor(SimpleCVisitor):
   
   # Visit a parse tree produced by SimpleCParser#printfStat.
   def visitPrintfStat(self, ctx: SimpleCParser.PrintfStatContext):
-    return self.visitChildren(ctx)
+    if ctx.getChildCount() == 5:
+      self.emit("print(")
+      self.visit(ctx.getChild(2))
+      self.emit(")")
+    else:
+      self.emit("print(")
+    return
   
   # Visit a parse tree produced by SimpleCParser#mOperator.
   def visitMOperator(self, ctx: SimpleCParser.MOperatorContext):
+    self.emit(ctx.OPERATOR().getText())
     return self.visitChildren(ctx)
   
   # Visit a parse tree produced by SimpleCParser#mConnector.
   def visitMConnector(self, ctx: SimpleCParser.MConnectorContext):
+    self.emit(ctx.CONNECTOR().getText())
     return self.visitChildren(ctx)
   
   # Visit a parse tree produced by SimpleCParser#mInt.
   def visitMInt(self, ctx: SimpleCParser.MIntContext):
+    self.emit(ctx.INT().getText())
     return self.visitChildren(ctx)
   
   # Visit a parse tree produced by SimpleCParser#mChar.
   def visitMChar(self, ctx: SimpleCParser.MCharContext):
+    self.emit(ctx.CHAR().getText())
     return self.visitChildren(ctx)
   
   # Visit a parse tree produced by SimpleCParser#mString.
   def visitMString(self, ctx: SimpleCParser.MStringContext):
+    self.emit(ctx.STRING().getText())
     return self.visitChildren(ctx)
   
   # Visit a parse tree produced by SimpleCParser#mID.
   def visitMID(self, ctx: SimpleCParser.MIDContext):
+    self.emit(ctx.ID().getText())
     return self.visitChildren(ctx)
 
 
