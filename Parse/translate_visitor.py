@@ -57,33 +57,41 @@ class TranslateVisitor(SimpleCVisitor):
         self.indentation -= 1
         return
     
-    # Visit a parse tree produced by SimpleCParser#ifBlock.
+    # [DONE] Visit a parse tree produced by SimpleCParser#ifBlock.
     def visitIfBlock(self, ctx: SimpleCParser.IfBlockContext):
         self.emit("if ")
         self.visitChildren(ctx.getChild(2))
-        self.emit(" :\n")
-        return self.visitChildren(ctx)
+        self.emit(":\n")
+        self.visitChildren(ctx.getChild(5))
+        return
     
-    # Visit a parse tree produced by SimpleCParser#elifBlock.
+    # [DONE] Visit a parse tree produced by SimpleCParser#elifBlock.
     def visitElifBlock(self, ctx: SimpleCParser.ElifBlockContext):
-        return self.visitChildren(ctx)
+        self.emit("elif ")
+        self.visitChildren(ctx.getChild(2))
+        self.emit(":\n")
+        self.visitChildren(ctx.getChild(5))
+        return
     
-    # Visit a parse tree produced by SimpleCParser#elseBlock.
+    # [DONE] Visit a parse tree produced by SimpleCParser#elseBlock.
     def visitElseBlock(self, ctx: SimpleCParser.ElseBlockContext):
-        return self.visitChildren(ctx)
+        self.emit("else:\n")
+        self.visitChildren(ctx.getChild(2))
+        return
     
-    # [Done] Visit a parse tree produced by SimpleCParser#whileBlock.
+    # [DONE] Visit a parse tree produced by SimpleCParser#whileBlock.
     def visitWhileBlock(self, ctx: SimpleCParser.WhileBlockContext):
         self.emit("while ")
         self.visitChildren(ctx.getChild(2))
-        self.emit(" :\n")
+        self.emit(":\n")
+        self.visitChildren(ctx.getChild(5))
         return
     
-    # [Done] Visit a parse tree produced by SimpleCParser#condition.
+    # [DONE] Visit a parse tree produced by SimpleCParser#condition.
     def visitCondition(self, ctx: SimpleCParser.ConditionContext):
         return self.visitChildren(ctx)
     
-    # [Done] Visit a parse tree produced by SimpleCParser#stat.
+    # [DONE] Visit a parse tree produced by SimpleCParser#stat.
     def visitStat(self, ctx: SimpleCParser.StatContext):
         self.print_indentation()
         self.visitChildren(ctx)
@@ -94,7 +102,7 @@ class TranslateVisitor(SimpleCVisitor):
     def visitExpr(self, ctx: SimpleCParser.ExprContext):
         return self.visitChildren(ctx)
     
-    # Visit a parse tree produced by SimpleCParser#designator.
+    # [DONE] Visit a parse tree produced by SimpleCParser#designator.
     def visitDesignator(self, ctx: SimpleCParser.DesignatorContext):
         self.visit(ctx.getChild(0))
         self.emit("[")
@@ -166,7 +174,6 @@ class TranslateVisitor(SimpleCVisitor):
         return self.visitChildren(ctx)
     
     # [DONE] Visit a parse tree produced by SimpleCParser#mConnector.
-    
     def visitMConnector(self, ctx: SimpleCParser.MConnectorContext):
         if ctx.CONNECTOR().getText() == "||":
             self.emit("or")
