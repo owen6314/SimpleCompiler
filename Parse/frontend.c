@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int main(int x, char y, int z)
+int main()
 {
 	char TIPS_T[] = "EXPR: %s RESULT: %d\n";
 	char expr[] = "1+1*3+5-6#";
