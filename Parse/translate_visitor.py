@@ -181,6 +181,10 @@ class TranslateVisitor(SimpleCVisitor):
             self.visit(ctx.getChild(1))
             self.emit(" = ")
             self.visit(ctx.getChild(3))
+        elif (ctx.getChildCount() == 3):
+            self.visit(ctx.getChild(1))
+            self.emit(" = ")
+            self.emit("None")
         return
     
     # [DONE] Visit a parse tree produced by SimpleCParser#assignStat.
