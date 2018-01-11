@@ -189,6 +189,14 @@ class TranslateVisitor(SimpleCVisitor):
         self.visit(ctx.getChild(2))
         self.emit(".isdigit()")
         return
+    
+    # Visit a parse tree produced by SimpleCParser#customFunc.
+    def visitCustomFunc(self, ctx:SimpleCParser.CustomFuncContext):
+        self.visit(ctx.getChild(0))
+        self.emit("(")
+        self.visit(ctx.getChild(2))
+        self.emit(")")
+        return
 
     # [DONE] Visit a parse tree produced by SimpleCParser#declareStat.
     def visitDeclareStat(self, ctx: SimpleCParser.DeclareStatContext):

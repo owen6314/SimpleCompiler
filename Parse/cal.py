@@ -1,16 +1,19 @@
+def testFunction(a):
+    return a
 def main():
+    testFunc = testFunction(3)
     TIPS_T = "EXPR: %s RESULT: %d\n"
     expr = "1+1*3+5-6#"
     post = [None] * 1000
     ss = [None] * 1000
     ch = None
     sum = None
-    sum = 100
     i = None
     t = None
     z = None
     error = 0
     top = 0
+    sum = expr
     t = 1
     i = 0
     ch = expr[i]
@@ -64,25 +67,22 @@ def main():
     ch = post[t]
     t = t + 1
     temp = None
+    tempTop = None
     while ch != ' ' and error == 0:
         if ch == '+':
-            tempTop = None
             tempTop = top - 1
             newstack[tempTop] = newstack[tempTop] + newstack[top]
             top = top - 1
         elif ch == '-':
-            tempTop = None
             tempTop = top - 1
             newstack[tempTop] = newstack[tempTop] - newstack[top]
             top = top - 1
         elif ch == '*':
-            tempTop = None
             tempTop = top - 1
             newstack[tempTop] = newstack[tempTop] * newstack[top]
             top = top - 1
         elif ch == '/':
             if newstack[top] != 0:
-                tempTop = None
                 tempTop = top - 1
                 newstack[tempTop] = newstack[tempTop] / newstack[top]
             else:
