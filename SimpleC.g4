@@ -1,6 +1,8 @@
 grammar SimpleC;
 
-start : (function)* ;
+start : (include)* (function)* ;
+
+include : '#include' '<' mID '.' mID '>' ;
 
 function : mType mID '(' formalParams ')' '{' content '}' ;
 
@@ -39,6 +41,7 @@ stat :  declareStat
      |  assignStat
      |  returnStat
      |  printfStat
+     |  customFuncStat
      ;
 
 expr : (mID | mInt | mChar | mString | designator | exprFunc ) mOperator expr
@@ -50,10 +53,10 @@ designator : mID '[' (mInt|mID) ']';
 arrayNoInit : mID '[' ']' ;
 
 exprFunc : strlenFunc
-		 | atoiFunc
-		 | isdigitFunc
-     | customFunc
-		 ;
+     | atoiFunc
+     | isdigitFunc
+         | customFunc
+     ;
 
 // 在程序中用到的三个函数
 strlenFunc : 'strlen' '(' mID ')' ;
@@ -68,8 +71,8 @@ actualParams : actualParam | actualParam ',' actualParams |;
 
 actualParam : mID | mInt ;
 
-declareStat : mType (mID|designator) ';'
-            | mType (mID|designator|arrayNoInit) '=' expr ';'
+declareStat : arrayDeclareStat
+            | otherDeclareStat
             ;
 
 arrayDeclareStat : mType mID '[' expr ']' ';' ;
@@ -89,6 +92,8 @@ returnStat : 'return' expr ';' ;
 printfStat : 'printf' '(' mString ')' ';'
            | 'printf' '(' mID (',' mID)* ')' ';'
            ;
+
+customFuncStat :  customFunc ';' ;
 
 mOperator : OPERATOR;
 

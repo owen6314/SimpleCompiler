@@ -12,16 +12,28 @@ from SimpleCVisitor import SimpleCVisitor
 
 
 class TranslateVisitor(SimpleCVisitor):
-    indentation = 0
+    def __init__(self, output_file=None):
+        super(SimpleCVisitor, self).__init__()
+        self.indentation = 0
+        self.output_file = output_file
     
     def print_indentation(self):
-        for i in range(self.indentation):
-            print("    ", end="")
+        if not self.output_file:
+            for i in range(self.indentation):
+                print("    ", end="")
+        else:
+            for i in range(self.indentation):
+                self.output_file.write("    ")
     
     def emit(self, *args):
-        for arg in args:
-            print(arg, end="")
+        if not self.output_file:
+            for arg in args:
+                print(arg, end="")
+        else:
+            for arg in args:
+                self.output_file.write(arg)
             
+    
     def entry(self):
         self.emit("\nif __name__ == '__main__':\n")
         self.emit("    main()")
@@ -36,7 +48,7 @@ class TranslateVisitor(SimpleCVisitor):
         self.entry()
         return
     
-    # [DONE] Visit a parse tree produced by SimpleCParser#include.
+    # Visit a parse tree produced by SimpleCParser#include.
     def visitInclude(self, ctx: SimpleCParser.IncludeContext):
         return
     
@@ -52,8 +64,8 @@ class TranslateVisitor(SimpleCVisitor):
         self.indentation -= 1
         return
     
-    # Visit a parse tree produced by SimpleCParser#params.
-    def visitParams(self, ctx: SimpleCParser.ParamsContext):
+    # Visit a parse tree produced by SimpleCParser#formalParams.
+    def visitFormalParams(self, ctx: SimpleCParser.FormalParamsContext):
         if ctx.getChildCount() == 3:
             self.visit(ctx.getChild(0))
             self.emit(", ")
@@ -61,10 +73,6 @@ class TranslateVisitor(SimpleCVisitor):
         elif ctx.getChildCount() == 1:
             self.visit(ctx.getChild(0))
         return
-    
-    # Visit a parse tree produced by SimpleCParser#param.
-    def visitParam(self, ctx: SimpleCParser.ParamContext):
-        return self.visitChildren(ctx)
     
     # [DONE] Visit a parse tree produced by SimpleCParser#mType.
     def visitMType(self, ctx: SimpleCParser.MTypeContext):
@@ -138,8 +146,8 @@ class TranslateVisitor(SimpleCVisitor):
     
     # Visit a parse tree produced by SimpleCParser#arrayNoInit.
     def visitArrayNoInit(self, ctx: SimpleCParser.ArrayNoInitContext):
-        # self.visit(ctx.getChild(0))
-        # self.emit("[]")
+        #self.visit(ctx.getChild(0))
+        #self.emit("[]")
         return self.visitChildren(ctx)
     
     # Visit a parse tree produced by SimpleCParser#exprFunc.
@@ -248,6 +256,7 @@ class TranslateVisitor(SimpleCVisitor):
     # [DONE] Visit a parse tree produced by SimpleCParser#mString.
     def visitMString(self, ctx: SimpleCParser.MStringContext):
         self.emit(ctx.STRING().getText())
+        
         return self.visitChildren(ctx)
     
     # [DONE] Visit a parse tree produced by SimpleCParser#mID.

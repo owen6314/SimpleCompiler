@@ -11,8 +11,10 @@ def main(argv):
     stream = CommonTokenStream(lexer)
     parser = SimpleCParser(stream)
     tree = parser.start()
-    eval = TranslateVisitor()
+    output_file = open("cal.py", "w+")
+    eval = TranslateVisitor(output_file)
     eval.visit(tree)
+    output_file.close()
 
 if __name__ == '__main__':
     main(sys.argv)

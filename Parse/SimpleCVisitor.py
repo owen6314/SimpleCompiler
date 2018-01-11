@@ -24,13 +24,13 @@ class SimpleCVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by SimpleCParser#params.
-    def visitParams(self, ctx:SimpleCParser.ParamsContext):
+    # Visit a parse tree produced by SimpleCParser#formalParams.
+    def visitFormalParams(self, ctx:SimpleCParser.FormalParamsContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by SimpleCParser#param.
-    def visitParam(self, ctx:SimpleCParser.ParamContext):
+    # Visit a parse tree produced by SimpleCParser#formalParam.
+    def visitFormalParam(self, ctx:SimpleCParser.FormalParamContext):
         return self.visitChildren(ctx)
 
 
@@ -114,6 +114,21 @@ class SimpleCVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by SimpleCParser#customFunc.
+    def visitCustomFunc(self, ctx:SimpleCParser.CustomFuncContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SimpleCParser#actualParams.
+    def visitActualParams(self, ctx:SimpleCParser.ActualParamsContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SimpleCParser#actualParam.
+    def visitActualParam(self, ctx:SimpleCParser.ActualParamContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by SimpleCParser#declareStat.
     def visitDeclareStat(self, ctx:SimpleCParser.DeclareStatContext):
         return self.visitChildren(ctx)
@@ -141,6 +156,11 @@ class SimpleCVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by SimpleCParser#printfStat.
     def visitPrintfStat(self, ctx:SimpleCParser.PrintfStatContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SimpleCParser#customFuncStat.
+    def visitCustomFuncStat(self, ctx:SimpleCParser.CustomFuncStatContext):
         return self.visitChildren(ctx)
 
 

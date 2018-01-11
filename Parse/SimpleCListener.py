@@ -35,21 +35,21 @@ class SimpleCListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by SimpleCParser#params.
-    def enterParams(self, ctx:SimpleCParser.ParamsContext):
+    # Enter a parse tree produced by SimpleCParser#formalParams.
+    def enterFormalParams(self, ctx:SimpleCParser.FormalParamsContext):
         pass
 
-    # Exit a parse tree produced by SimpleCParser#params.
-    def exitParams(self, ctx:SimpleCParser.ParamsContext):
+    # Exit a parse tree produced by SimpleCParser#formalParams.
+    def exitFormalParams(self, ctx:SimpleCParser.FormalParamsContext):
         pass
 
 
-    # Enter a parse tree produced by SimpleCParser#param.
-    def enterParam(self, ctx:SimpleCParser.ParamContext):
+    # Enter a parse tree produced by SimpleCParser#formalParam.
+    def enterFormalParam(self, ctx:SimpleCParser.FormalParamContext):
         pass
 
-    # Exit a parse tree produced by SimpleCParser#param.
-    def exitParam(self, ctx:SimpleCParser.ParamContext):
+    # Exit a parse tree produced by SimpleCParser#formalParam.
+    def exitFormalParam(self, ctx:SimpleCParser.FormalParamContext):
         pass
 
 
@@ -197,6 +197,33 @@ class SimpleCListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by SimpleCParser#customFunc.
+    def enterCustomFunc(self, ctx:SimpleCParser.CustomFuncContext):
+        pass
+
+    # Exit a parse tree produced by SimpleCParser#customFunc.
+    def exitCustomFunc(self, ctx:SimpleCParser.CustomFuncContext):
+        pass
+
+
+    # Enter a parse tree produced by SimpleCParser#actualParams.
+    def enterActualParams(self, ctx:SimpleCParser.ActualParamsContext):
+        pass
+
+    # Exit a parse tree produced by SimpleCParser#actualParams.
+    def exitActualParams(self, ctx:SimpleCParser.ActualParamsContext):
+        pass
+
+
+    # Enter a parse tree produced by SimpleCParser#actualParam.
+    def enterActualParam(self, ctx:SimpleCParser.ActualParamContext):
+        pass
+
+    # Exit a parse tree produced by SimpleCParser#actualParam.
+    def exitActualParam(self, ctx:SimpleCParser.ActualParamContext):
+        pass
+
+
     # Enter a parse tree produced by SimpleCParser#declareStat.
     def enterDeclareStat(self, ctx:SimpleCParser.DeclareStatContext):
         pass
@@ -248,6 +275,15 @@ class SimpleCListener(ParseTreeListener):
 
     # Exit a parse tree produced by SimpleCParser#printfStat.
     def exitPrintfStat(self, ctx:SimpleCParser.PrintfStatContext):
+        pass
+
+
+    # Enter a parse tree produced by SimpleCParser#customFuncStat.
+    def enterCustomFuncStat(self, ctx:SimpleCParser.CustomFuncStatContext):
+        pass
+
+    # Exit a parse tree produced by SimpleCParser#customFuncStat.
+    def exitCustomFuncStat(self, ctx:SimpleCParser.CustomFuncStatContext):
         pass
 
 

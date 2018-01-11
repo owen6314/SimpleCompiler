@@ -3,7 +3,11 @@ def main():
     expr = "1+1*3+5-6#"
     post = [None] * 1000
     ss = [None] * 1000
-    
+    ch = None
+    sum = None
+    i = None
+    t = None
+    z = None
     error = 0
     top = 0
     t = 1
@@ -58,26 +62,26 @@ def main():
     top = 0
     ch = post[t]
     t = t + 1
-    
+    temp = None
     while ch != ' ' and error == 0:
         if ch == '+':
-            
+            tempTop = None
             tempTop = top - 1
             newstack[tempTop] = newstack[tempTop] + newstack[top]
             top = top - 1
         elif ch == '-':
-            
+            tempTop = None
             tempTop = top - 1
             newstack[tempTop] = newstack[tempTop] - newstack[top]
             top = top - 1
         elif ch == '*':
-            
+            tempTop = None
             tempTop = top - 1
             newstack[tempTop] = newstack[tempTop] * newstack[top]
             top = top - 1
         elif ch == '/':
             if newstack[top] != 0:
-                
+                tempTop = None
                 tempTop = top - 1
                 newstack[tempTop] = newstack[tempTop] / newstack[top]
             else:
@@ -96,14 +100,13 @@ def main():
             newstack[top] = int("".join(newstr[:newstr.index(0)]))
         ch = post[t]
         t = t + 1
-    
+    result = None
     result = newstack[top]
     if error == 0:
-        print(TIPS_T % (expr, result,))
+        print(TIPS_T % (expr,result,))
     else:
         print("error\n")
     return 0
-
 
 if __name__ == '__main__':
     main()

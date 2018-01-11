@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <string.h>
 
@@ -21,9 +20,9 @@ int main()
 	ch = expr[i];
 	i = i + 1;
 
-	while (ch != '#') 
+	while (ch != '#')
 	{
-		if (ch == '+' || ch == '-') 
+		if (ch == '+' || ch == '-')
 		{
 			while (top != 0 && ss[top] != '(')
 			{
@@ -34,10 +33,10 @@ int main()
 			top = top + 1;
 			ss[top] = ch;
 
-		} 
-		else if (ch == '*' || ch == '/') 
+		}
+		else if (ch == '*' || ch == '/')
 		{
-			while (ss[top] == '*'|| ss[top] == '/') 
+			while (ss[top] == '*'|| ss[top] == '/')
 			{
 				post[t] = ss[top];
 				top = top - 1;
@@ -45,29 +44,29 @@ int main()
 			}
 			top = top + 1;
 			ss[top] = ch;
-		} 
-		else if (ch == '(') 
+		}
+		else if (ch == '(')
 		{
 			top = top + 1;
 			ss[top] = ch;
-		} 
-		else if (ch == ')') 
+		}
+		else if (ch == ')')
 		{
-			while (ss[top] != '(') 
+			while (ss[top] != '(')
 			{
 				post[t] = ss[top];
 				top = top - 1;
 				t = t + 1;
 			}
 			top =top - 1;
-		} 
+		}
 		else if (ch == ' ')
 		{
 			z = 1;
-		} 
-		else 
+		}
+		else
 		{
-			while (isdigit(ch) || ch == '.') 
+			while (isdigit(ch) || ch == '.')
 			{
 				post[t] = ch;
 				t = t + 1;
@@ -81,7 +80,7 @@ int main()
 		ch = expr[i];
 		i = i + 1;
 	}
-	while (top!= 0) 
+	while (top!= 0)
 	{
 		post[t] = ss[top];
 		t = t + 1;
@@ -96,20 +95,20 @@ int main()
 	t=t+1;
 	char temp;
 	while (ch!= ' ' && error == 0) {
-		if (ch == '+') 
+		if (ch == '+')
 		{
 			int tempTop;
 			tempTop = top - 1;
 			newstack[tempTop] = newstack[tempTop] + newstack[top];
 			top = top - 1;
-		} 
-		else if (ch == '-') 
+		}
+		else if (ch == '-')
 		{
 			int tempTop;
 			tempTop = top - 1;
 			newstack[tempTop] = newstack[tempTop] - newstack[top];
 			top = top - 1;
-		} 
+		}
 		else if (ch == '*')
 		{
 			int tempTop;
@@ -117,7 +116,7 @@ int main()
 			newstack[tempTop] = newstack[tempTop] * newstack[top];
 			top = top - 1;
 		}
-		else if(ch == '/') 
+		else if(ch == '/')
 		{
 			if (newstack[top] != 0)
 			{
@@ -130,11 +129,11 @@ int main()
 				error = 1;
 			}
 			top = top - 1;
-		} 
-		else 
+		}
+		else
 		{
 			i = 0;
-			while (isdigit(ch) || ch == '.') 
+			while (isdigit(ch) || ch == '.')
 			{
 				newstr[i] = ch;
 				i = i + 1;
@@ -149,7 +148,7 @@ int main()
 		ch = post[t];
 		t = t + 1;
 	}
-	
+
 	int result;
 	result = newstack[top];
 	if(error == 0)
