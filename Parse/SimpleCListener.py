@@ -35,6 +35,24 @@ class SimpleCListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by SimpleCParser#params.
+    def enterParams(self, ctx:SimpleCParser.ParamsContext):
+        pass
+
+    # Exit a parse tree produced by SimpleCParser#params.
+    def exitParams(self, ctx:SimpleCParser.ParamsContext):
+        pass
+
+
+    # Enter a parse tree produced by SimpleCParser#param.
+    def enterParam(self, ctx:SimpleCParser.ParamContext):
+        pass
+
+    # Exit a parse tree produced by SimpleCParser#param.
+    def exitParam(self, ctx:SimpleCParser.ParamContext):
+        pass
+
+
     # Enter a parse tree produced by SimpleCParser#mType.
     def enterMType(self, ctx:SimpleCParser.MTypeContext):
         pass

@@ -24,6 +24,16 @@ class SimpleCVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by SimpleCParser#params.
+    def visitParams(self, ctx:SimpleCParser.ParamsContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SimpleCParser#param.
+    def visitParam(self, ctx:SimpleCParser.ParamContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by SimpleCParser#mType.
     def visitMType(self, ctx:SimpleCParser.MTypeContext):
         return self.visitChildren(ctx)
