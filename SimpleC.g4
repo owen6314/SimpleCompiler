@@ -2,11 +2,11 @@ grammar SimpleC;
 
 start : function ;
 
-//include : '#include' includeExpr;
+function : mType mID '(' params ')' '{' content '}' ;
 
-//includeExpr : '<' mID '.' mID '>' | mString ;
+params : param | param ',' params ;
 
-function : mType mID '(' ')' '{' content '}' ;
+param : mType mID ;
 
 mType : 'int' | 'char' ;
 
