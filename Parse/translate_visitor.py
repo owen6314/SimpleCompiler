@@ -204,16 +204,16 @@ class TranslateVisitor(SimpleCVisitor):
     # Visit a parse tree produced by SimpleCParser#otherDeclareStat.
     def visitOtherDeclareStat(self, ctx: SimpleCParser.OtherDeclareStatContext):
         if (ctx.getChildCount() == 5):
-            self.visit(ctx.getChild(1))
+            m_id = self.visit(ctx.getChild(1))
             self.emit(" = ")
             self.visit(ctx.getChild(3))
-            if self.check_redefine(self.visit(ctx.getChild(1))):
+            if self.check_redefine(m_id):
                 print("Error: Variable redefinition")
         elif (ctx.getChildCount() == 3):
-            self.visit(ctx.getChild(1))
+            m_id = self.visit(ctx.getChild(1))
             self.emit(" = ")
-            self.emit("None\n")
-            if self.check_redefine(self.visit(ctx.getChild(1))):
+            self.emit("None")
+            if self.check_redefine(m_id):
                 print("Error: Variable redefinition")
         return
 

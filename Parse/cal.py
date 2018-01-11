@@ -1,21 +1,15 @@
 def main():
-    TIPS_T = "EXPR: %s RESULT: %d\n"TIPS_T
-    expr = "1+1*3+5-6#"expr
+    TIPS_T = "EXPR: %s RESULT: %d\n"
+    expr = "1+1*3+5-6#"
     post = [None] * 1000
     ss = [None] * 1000
     ch = None
-ch
     sum = None
-sum
-    sum = 100sum
     i = None
-i
     t = None
-t
     z = None
-z
-    error = 0error
-    top = 0top
+    error = 0
+    top = 0
     t = 1
     i = 0
     ch = expr[i]
@@ -69,30 +63,25 @@ z
     ch = post[t]
     t = t + 1
     temp = None
-temp
     while ch != ' ' and error == 0:
         if ch == '+':
             tempTop = None
-tempTop
             tempTop = top - 1
             newstack[tempTop] = newstack[tempTop] + newstack[top]
             top = top - 1
         elif ch == '-':
             tempTop = None
-tempTop
             tempTop = top - 1
             newstack[tempTop] = newstack[tempTop] - newstack[top]
             top = top - 1
         elif ch == '*':
             tempTop = None
-tempTop
             tempTop = top - 1
             newstack[tempTop] = newstack[tempTop] * newstack[top]
             top = top - 1
         elif ch == '/':
             if newstack[top] != 0:
                 tempTop = None
-tempTop
                 tempTop = top - 1
                 newstack[tempTop] = newstack[tempTop] / newstack[top]
             else:
@@ -112,7 +101,6 @@ tempTop
         ch = post[t]
         t = t + 1
     result = None
-result
     result = newstack[top]
     if error == 0:
         print(TIPS_T % (expr,result,))
