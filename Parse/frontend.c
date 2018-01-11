@@ -19,6 +19,7 @@ int main()
 	i = 0;
 	ch = expr[i];
 	i = i + 1;
+
 	while (ch != '#') 
 	{
 		if (ch == '+' || ch == '-') 

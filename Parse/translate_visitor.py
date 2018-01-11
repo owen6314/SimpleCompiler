@@ -26,8 +26,9 @@ class TranslateVisitor(SimpleCVisitor):
         self.emit("\nif __name__ == '__main__':\n")
         self.emit("    main()")
     
-    def check_type(self):
-        pass
+    def check_type(self, attr_1, attr_2):
+        if attr_1['type'] != attr_2['type']:
+            print("warning: types mismatch, %s and %s" % (attr_1['type'], attr_2['type']))
     
     # [DONE] Visit a parse tree produced by SimpleCParser#start.
     def visitStart(self, ctx: SimpleCParser.StartContext):
@@ -143,7 +144,11 @@ class TranslateVisitor(SimpleCVisitor):
     
     # Visit a parse tree produced by SimpleCParser#exprFunc.
     def visitExprFunc(self, ctx: SimpleCParser.ExprFuncContext):
-        return self.visitChildren(ctx)
+        attr_1 = self.visit(ctx.getChild(0))
+        if ctx.getChildCount() == 3:
+            attr_2 = self.visit(ctx.getChild(2))
+            self.check_type(attr_1, attr_2)
+        return attr_1
     
     # Visit a parse tree produced by SimpleCParser#strlenFunc.
     def visitStrlenFunc(self, ctx: SimpleCParser.StrlenFuncContext):
@@ -227,12 +232,14 @@ class TranslateVisitor(SimpleCVisitor):
     # [DONE] Visit a parse tree produced by SimpleCParser#mInt.
     def visitMInt(self, ctx: SimpleCParser.MIntContext):
         self.emit(ctx.INT().getText())
-        return self.visitChildren(ctx)
+        self.visitChildren(ctx)
+        return {'type': 'int'}
     
     # [DONE] Visit a parse tree produced by SimpleCParser#mChar.
     def visitMChar(self, ctx: SimpleCParser.MCharContext):
         self.emit(ctx.CHAR().getText())
-        return self.visitChildren(ctx)
+        self.visitChildren(ctx)
+        return {'type': 'char'}
     
     # [DONE] Visit a parse tree produced by SimpleCParser#mString.
     def visitMString(self, ctx: SimpleCParser.MStringContext):
