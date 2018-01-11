@@ -1,26 +1,28 @@
 grammar SimpleC;
 
-start : function ;
+start : (include)* function ;
+
+include : '#include' '<' mID '.' mID '>' ;
 
 function : mType mID '(' params ')' '{' content '}' ;
 
-params : param | param ',' params ;
+params : param | param ',' params | ;
 
 param : mType mID ;
 
 mType : 'int' | 'char' ;
 
 content : (stat|block) content
-        | stat|block
+        | (stat|block)
         |
         ;
 
 // block是需要加{}的if else while语句块
 block : ifBlock
-	  | elifBlock
-	  | elseBlock
-	  | whileBlock
-	  ;
+      | elifBlock
+      | elseBlock
+      | whileBlock
+      ;
 
 
 ifBlock : 'if' '(' condition ')' '{' content '}' ;
@@ -36,24 +38,31 @@ condition : expr mConnector condition
           ;
 
 stat :  declareStat
-	 |  assignStat
-	 |  returnStat
-	 |  printfStat
-	 ;
+     |  assignStat
+     |  returnStat
+     |  printfStat
+     ;
 
+// 可以出现在等式右边或判断条件中的表达式,包括三个标准库函数
+/*expr : mID('[' (mInt|mID) ']')? mOperator mID('[' (mInt|mID) ']')?
+     | mID('[' (mInt|mID) ']')? mOperator mInt
+     | mID('[' (mInt|mID) ']')? mOperator mChar
+     | mInt mOperator mInt
+     | exprFunc
+     ;*/
 
 expr : (mID | mInt | mChar | mString | designator | exprFunc ) mOperator expr
      | (mID | mInt | mChar | mString | designator | exprFunc )
-	 ;
+     ;
 
 designator : mID '[' (mInt|mID) ']';
 
 arrayNoInit : mID '[' ']' ;
 
 exprFunc : strlenFunc
-		 | atoiFunc
-		 | isdigitFunc
-		 ;
+         | atoiFunc
+         | isdigitFunc
+         ;
 
 // 在程序中用到的三个函数
 strlenFunc : 'strlen' '(' mID ')' ;
@@ -62,9 +71,34 @@ atoiFunc : 'atoi' '(' mID ')' ;
 
 isdigitFunc : 'isdigit' '(' mID ')' ;
 
-declareStat : mType (mID|designator) ';'
-            | mType (mID|designator|arrayNoInit) '=' expr ';'
+// 声明语句
+// 第四条：如int a[100]
+// 第五条: 如char a[100] = "hello"
+//declareStat : mType mID ';'
+//          | mType mID '=' mID ';'
+//          | mType mID '=' mInt ';'
+//          | mType mID '[' (mInt)? ']' ';'
+//          | mType mID '[' (mInt)? ']' '=' mString ';'
+//          ;
+
+declareStat : arrayDeclareStat
+            | otherDeclareStat
             ;
+
+arrayDeclareStat : mType mID '[' expr ']' ';' ;
+
+otherDeclareStat :  mType (mID|designator|arrayNoInit) '=' expr ';'
+                 |  mType mID ';'
+                 ;
+
+// 赋值语句
+// 后四条包括了数组中元素的赋值
+/*assignStat : mID '=' mID ';'
+           | mID ('[' (mInt|mID) ']')? '=' mID ('[' (mInt|mID) ']')? ';'
+           | mID ('[' (mInt|mID) ']')? '=' mInt ';'
+           | mID ('[' (mInt|mID) ']')? '=' mChar ';'
+           | mID ('[' (mInt|mID) ']')? '=' expr ';'
+           ;*/
 
 assignStat : (mID | designator) '=' expr ';' ;
 
@@ -76,7 +110,7 @@ returnStat : 'return' mInt ';' ;
 printfStat : 'printf' '(' mString ')' ';'
            | 'printf' '(' mID (',' mID)* ')' ';'
            ;
-           
+
 mOperator : OPERATOR;
 
 mConnector : CONNECTOR;
@@ -91,7 +125,7 @@ mID : ID;
 
 // lexical rules
 
-OPERATOR : '+' | '-' | '*' | '/' | '==' | '!=' | '>' | '<' | '<=' | '>=' ;
+OPERATOR : '+' | '-' | '*' | '/' | '==' | '!=' | '<=' | '>=' | '>' | '<' ;
 
 CONNECTOR : '&&' | '||' ;
 
@@ -104,11 +138,6 @@ STRING : '"' .*? '"' ;
 ID : [a-zA-Z][a-zA-Z0-9_]* ;  //identifier必须由字母开头，含有数字、字母或下划线
 
 //comments and white spaces
-Preprocessor
-    :   '#' ~[\r\n]*
-         -> skip
-    ;
-
 BlockComment
     :   '/*' .*? '*/'
         -> skip
@@ -119,7 +148,6 @@ LineComment
         -> skip
     ;
 WS
-	: 	[ \t\r\n]+ 
-	 	-> skip 
-	;
-
+    :   [ \t\r\n]+
+        -> skip
+    ;
