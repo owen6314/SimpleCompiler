@@ -1,7 +1,3 @@
-def atoi(str):
-    return int(''.join(str[:str.index(0)]))
-
-
 def main():
     TIPS_T = "EXPR: %s RESULT: %d\n"
     expr = "1+1*3+5-6#"
@@ -109,4 +105,5 @@ def main():
     return 0
 
 
-main()
+if __name__ == '__main__':
+    main()

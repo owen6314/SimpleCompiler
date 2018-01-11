@@ -21,10 +21,19 @@ class TranslateVisitor(SimpleCVisitor):
     def emit(self, *args):
         for arg in args:
             print(arg, end="")
+            
+    def entry(self):
+        self.emit("\nif __name__ == '__main__':\n")
+        self.emit("    main()")
+    
+    def check_type(self):
+        pass
     
     # [DONE] Visit a parse tree produced by SimpleCParser#start.
     def visitStart(self, ctx: SimpleCParser.StartContext):
-        return self.visitChildren(ctx)
+        self.visitChildren(ctx)
+        self.entry()
+        return
     
     # [DONE] Visit a parse tree produced by SimpleCParser#include.
     def visitInclude(self, ctx: SimpleCParser.IncludeContext):
@@ -172,6 +181,10 @@ class TranslateVisitor(SimpleCVisitor):
             self.visit(ctx.getChild(1))
             self.emit(" = ")
             self.visit(ctx.getChild(3))
+        elif (ctx.getChildCount() == 3):
+            self.visit(ctx.getChild(1))
+            self.emit(" = ")
+            self.emit("None")
         return
     
     # [DONE] Visit a parse tree produced by SimpleCParser#assignStat.

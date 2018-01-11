@@ -11,16 +11,16 @@ formalParam : mType mID ;
 mType : 'int' | 'char' ;
 
 content : (stat|block) content
-        | stat|block
+        | (stat|block)
         |
         ;
 
 // block是需要加{}的if else while语句块
 block : ifBlock
-	  | elifBlock
-	  | elseBlock
-	  | whileBlock
-	  ;
+      | elifBlock
+      | elseBlock
+      | whileBlock
+      ;
 
 
 ifBlock : 'if' '(' condition ')' '{' content '}' ;
@@ -36,15 +36,14 @@ condition : expr mConnector condition
           ;
 
 stat :  declareStat
-	 |  assignStat
-	 |  returnStat
-	 |  printfStat
-	 ;
-
+     |  assignStat
+     |  returnStat
+     |  printfStat
+     ;
 
 expr : (mID | mInt | mChar | mString | designator | exprFunc ) mOperator expr
      | (mID | mInt | mChar | mString | designator | exprFunc )
-	 ;
+     ;
 
 designator : mID '[' (mInt|mID) ']';
 
@@ -73,6 +72,13 @@ declareStat : mType (mID|designator) ';'
             | mType (mID|designator|arrayNoInit) '=' expr ';'
             ;
 
+arrayDeclareStat : mType mID '[' expr ']' ';' ;
+
+otherDeclareStat :  mType (mID|designator|arrayNoInit) '=' expr ';'
+                 |  mType mID ';'
+                 ;
+
+
 assignStat : (mID | designator) '=' expr ';' ;
 
 // 返回语句
@@ -98,7 +104,7 @@ mID : ID;
 
 // lexical rules
 
-OPERATOR : '+' | '-' | '*' | '/' | '==' | '!=' | '>' | '<' | '<=' | '>=' ;
+OPERATOR : '+' | '-' | '*' | '/' | '==' | '!=' | '<=' | '>=' | '>' | '<' ;
 
 CONNECTOR : '&&' | '||' ;
 
@@ -111,11 +117,6 @@ STRING : '"' .*? '"' ;
 ID : [a-zA-Z][a-zA-Z0-9_]* ;  //identifier必须由字母开头，含有数字、字母或下划线
 
 //comments and white spaces
-Preprocessor
-    :   '#' ~[\r\n]*
-         -> skip
-    ;
-
 BlockComment
     :   '/*' .*? '*/'
         -> skip
@@ -126,7 +127,6 @@ LineComment
         -> skip
     ;
 WS
-	: 	[ \t\r\n]+ 
-	 	-> skip 
-	;
-
+    :   [ \t\r\n]+
+        -> skip
+    ;
