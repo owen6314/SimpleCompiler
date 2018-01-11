@@ -45,14 +45,14 @@ class TranslateVisitor(SimpleCVisitor):
             print("warning: types mismatch, %s and %s" % (attr_1['type'], attr_2['type']))
 
     def check_redefine(self, arg):
-        if "main" in self.function_dict:
-            if arg in self.function_dict["main"]:
+        if self.indentation in self.function_dict:
+            if arg in self.function_dict[self.indentation]:
                 return True
             else:
-                self.function_dict["main"].append(arg)
+                self.function_dict[self.indentation].append(arg)
                 return False
         else:
-            self.function_dict["main"] = list()
+            self.function_dict[self.indentation] = list()
         return False
 
     # [DONE] Visit a parse tree produced by SimpleCParser#start.
