@@ -5,6 +5,7 @@ def main():
     ss = [None] * 1000
     ch = None
     sum = None
+    sum = 100
     i = None
     t = None
     z = None
