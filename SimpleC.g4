@@ -1,14 +1,14 @@
 grammar SimpleC;
 
-start : (include)* function ;
+start : (include)* (function)* ;
 
 include : '#include' '<' mID '.' mID '>' ;
 
-function : mType mID '(' params ')' '{' content '}' ;
+function : mType mID '(' formalParams ')' '{' content '}' ;
 
-params : param | param ',' params | ;
+formalParams : formalParam | formalParam ',' formalParams |;
 
-param : mType mID ;
+formalParam : mType mID ;
 
 mType : 'int' | 'char' ;
 
@@ -41,15 +41,8 @@ stat :  declareStat
      |  assignStat
      |  returnStat
      |  printfStat
+     |  customFuncStat
      ;
-
-// 可以出现在等式右边或判断条件中的表达式,包括三个标准库函数
-/*expr : mID('[' (mInt|mID) ']')? mOperator mID('[' (mInt|mID) ']')?
-     | mID('[' (mInt|mID) ']')? mOperator mInt
-     | mID('[' (mInt|mID) ']')? mOperator mChar
-     | mInt mOperator mInt
-     | exprFunc
-     ;*/
 
 expr : (mID | mInt | mChar | mString | designator | exprFunc ) mOperator expr
      | (mID | mInt | mChar | mString | designator | exprFunc )
@@ -60,9 +53,10 @@ designator : mID '[' (mInt|mID) ']';
 arrayNoInit : mID '[' ']' ;
 
 exprFunc : strlenFunc
-         | atoiFunc
-         | isdigitFunc
-         ;
+     | atoiFunc
+     | isdigitFunc
+         | customFunc
+     ;
 
 // 在程序中用到的三个函数
 strlenFunc : 'strlen' '(' mID ')' ;
@@ -71,15 +65,11 @@ atoiFunc : 'atoi' '(' mID ')' ;
 
 isdigitFunc : 'isdigit' '(' mID ')' ;
 
-// 声明语句
-// 第四条：如int a[100]
-// 第五条: 如char a[100] = "hello"
-//declareStat : mType mID ';'
-//          | mType mID '=' mID ';'
-//          | mType mID '=' mInt ';'
-//          | mType mID '[' (mInt)? ']' ';'
-//          | mType mID '[' (mInt)? ']' '=' mString ';'
-//          ;
+customFunc : mID '(' actualParams ')' ;
+
+actualParams : actualParam | actualParam ',' actualParams |;
+
+actualParam : mID | mInt ;
 
 declareStat : arrayDeclareStat
             | otherDeclareStat
@@ -91,25 +81,19 @@ otherDeclareStat :  mType (mID|designator|arrayNoInit) '=' expr ';'
                  |  mType mID ';'
                  ;
 
-// 赋值语句
-// 后四条包括了数组中元素的赋值
-/*assignStat : mID '=' mID ';'
-           | mID ('[' (mInt|mID) ']')? '=' mID ('[' (mInt|mID) ']')? ';'
-           | mID ('[' (mInt|mID) ']')? '=' mInt ';'
-           | mID ('[' (mInt|mID) ']')? '=' mChar ';'
-           | mID ('[' (mInt|mID) ']')? '=' expr ';'
-           ;*/
 
 assignStat : (mID | designator) '=' expr ';' ;
 
 // 返回语句
-returnStat : 'return' mInt ';' ;
+returnStat : 'return' expr ';' ;
 
 // 打印语句
 // 参数为字符串或多个变量
 printfStat : 'printf' '(' mString ')' ';'
            | 'printf' '(' mID (',' mID)* ')' ';'
            ;
+
+customFuncStat :  customFunc ';' ;
 
 mOperator : OPERATOR;
 

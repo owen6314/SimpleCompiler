@@ -1,11 +1,21 @@
 def main():
-    TIPS_T = "EXPR: %s RESULT: %d\n"
-    expr = "1+1*3+5-6#"
+    TIPS_T = "EXPR: %s RESULT: %d\n"TIPS_T
+    expr = "1+1*3+5-6#"expr
     post = [None] * 1000
     ss = [None] * 1000
-    
-    error = 0
-    top = 0
+    ch = None
+ch
+    sum = None
+sum
+    sum = 100sum
+    i = None
+i
+    t = None
+t
+    z = None
+z
+    error = 0error
+    top = 0top
     t = 1
     i = 0
     ch = expr[i]
@@ -58,26 +68,31 @@ def main():
     top = 0
     ch = post[t]
     t = t + 1
-    
+    temp = None
+temp
     while ch != ' ' and error == 0:
         if ch == '+':
-            
+            tempTop = None
+tempTop
             tempTop = top - 1
             newstack[tempTop] = newstack[tempTop] + newstack[top]
             top = top - 1
         elif ch == '-':
-            
+            tempTop = None
+tempTop
             tempTop = top - 1
             newstack[tempTop] = newstack[tempTop] - newstack[top]
             top = top - 1
         elif ch == '*':
-            
+            tempTop = None
+tempTop
             tempTop = top - 1
             newstack[tempTop] = newstack[tempTop] * newstack[top]
             top = top - 1
         elif ch == '/':
             if newstack[top] != 0:
-                
+                tempTop = None
+tempTop
                 tempTop = top - 1
                 newstack[tempTop] = newstack[tempTop] / newstack[top]
             else:
@@ -96,14 +111,14 @@ def main():
             newstack[top] = int("".join(newstr[:newstr.index(0)]))
         ch = post[t]
         t = t + 1
-    
+    result = None
+result
     result = newstack[top]
     if error == 0:
-        print(TIPS_T % (expr, result,))
+        print(TIPS_T % (expr,result,))
     else:
         print("error\n")
     return 0
-
 
 if __name__ == '__main__':
     main()
