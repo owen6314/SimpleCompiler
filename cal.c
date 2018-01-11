@@ -99,24 +99,22 @@ int main()
 	ch = post[t];
 	t=t+1;
 	char temp;
+	int tempTop;
 	while (ch!= ' ' && error == 0) {
 		if (ch == '+') 
 		{
-			int tempTop;
 			tempTop = top - 1;
 			newstack[tempTop] = newstack[tempTop] + newstack[top];
 			top = top - 1;
 		} 
 		else if (ch == '-') 
 		{
-			int tempTop;
 			tempTop = top - 1;
 			newstack[tempTop] = newstack[tempTop] - newstack[top];
 			top = top - 1;
 		} 
 		else if (ch == '*')
 		{
-			int tempTop;
 			tempTop = top - 1;
 			newstack[tempTop] = newstack[tempTop] * newstack[top];
 			top = top - 1;
@@ -125,7 +123,6 @@ int main()
 		{
 			if (newstack[top] != 0)
 			{
-				int tempTop;
 				tempTop = top - 1;
 				newstack[tempTop] = newstack[tempTop] / newstack[top];
 			}
