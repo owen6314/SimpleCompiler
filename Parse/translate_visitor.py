@@ -151,17 +151,17 @@ class TranslateVisitor(SimpleCVisitor):
 
     # [DONE] Visit a parse tree produced by SimpleCParser#designator.
     def visitDesignator(self, ctx: SimpleCParser.DesignatorContext):
-        self.visit(ctx.getChild(0))
+        m_id = self.visit(ctx.getChild(0))
         self.emit("[")
         self.visit(ctx.getChild(2))
         self.emit("]")
-        return
+        return m_id
 
     # Visit a parse tree produced by SimpleCParser#arrayNoInit.
     def visitArrayNoInit(self, ctx: SimpleCParser.ArrayNoInitContext):
         # self.visit(ctx.getChild(0))
         # self.emit("[]")
-        return self.visitChildren(ctx)
+        return self.visit(ctx.getChild(0))
 
     # Visit a parse tree produced by SimpleCParser#exprFunc.
     def visitExprFunc(self, ctx: SimpleCParser.ExprFuncContext):
@@ -204,9 +204,11 @@ class TranslateVisitor(SimpleCVisitor):
 
     # Visit a parse tree produced by SimpleCParser#arrayDeclareStat.
     def visitArrayDeclareStat(self, ctx: SimpleCParser.ArrayDeclareStatContext):
-        self.visit(ctx.getChild(1))
+        m_id = self.visit(ctx.getChild(1))
         self.emit(' = [None] * ')
         self.visit(ctx.getChild(3))
+        if self.check_redefine(m_id):
+            print("Error: Identify \"" + str(m_id) + "\" redefinition")
         return
 
     # Visit a parse tree produced by SimpleCParser#otherDeclareStat.
@@ -216,13 +218,13 @@ class TranslateVisitor(SimpleCVisitor):
             self.emit(" = ")
             self.visit(ctx.getChild(3))
             if self.check_redefine(m_id):
-                print("Error: Variable redefinition")
+                print("Error: Identify \"" + str(m_id) + "\" redefinition")
         elif (ctx.getChildCount() == 3):
             m_id = self.visit(ctx.getChild(1))
             self.emit(" = ")
             self.emit("None")
             if self.check_redefine(m_id):
-                print("Error: Variable redefinition")
+                print("Error: Identify \"" + str(m_id) + "\" redefinition")
         return
 
     # [DONE] Visit a parse tree produced by SimpleCParser#assignStat.
@@ -291,6 +293,5 @@ class TranslateVisitor(SimpleCVisitor):
         #     print("Error: Variable redefinition")
         self.visitChildren(ctx)
         return ctx.ID().getText()
-
 
 del SimpleCParser
