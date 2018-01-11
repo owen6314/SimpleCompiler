@@ -1,8 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 
+int testFunction(int a)
+{
+	return a;
+}
 int main()
 {
+	int testFunc = testFunction(3);
 	char TIPS_T[] = "EXPR: %s RESULT: %d\n";
 	char expr[] = "1+1*3+5-6#";
 
@@ -10,17 +15,16 @@ int main()
 	char ss[1000];
 	char ch;
 	int sum;
-	int sum = 100;
 	int i;
 	int t;
 	int z;
 	int error = 0;
 	int top = 0;
+	sum = strlen(expr);
 	t = 1;
 	i = 0;
 	ch = expr[i];
 	i = i + 1;
-
 	while (ch != '#')
 	{
 		if (ch == '+' || ch == '-')
@@ -95,24 +99,22 @@ int main()
 	ch = post[t];
 	t=t+1;
 	char temp;
+	int tempTop;
 	while (ch!= ' ' && error == 0) {
 		if (ch == '+')
 		{
-			int tempTop;
 			tempTop = top - 1;
 			newstack[tempTop] = newstack[tempTop] + newstack[top];
 			top = top - 1;
 		}
 		else if (ch == '-')
 		{
-			int tempTop;
 			tempTop = top - 1;
 			newstack[tempTop] = newstack[tempTop] - newstack[top];
 			top = top - 1;
 		}
 		else if (ch == '*')
 		{
-			int tempTop;
 			tempTop = top - 1;
 			newstack[tempTop] = newstack[tempTop] * newstack[top];
 			top = top - 1;
@@ -121,7 +123,6 @@ int main()
 		{
 			if (newstack[top] != 0)
 			{
-				int tempTop;
 				tempTop = top - 1;
 				newstack[tempTop] = newstack[tempTop] / newstack[top];
 			}
@@ -162,4 +163,3 @@ int main()
 	}
 	return 0;
 }
-
