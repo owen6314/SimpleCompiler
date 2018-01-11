@@ -1,8 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 
-int main(int argc, char argv) 
+int testFunction(int a)
 {
+	return a;
+}
+int main() 
+{
+	int testFunc = testFunction(3);
 	char TIPS_T[] = "EXPR: %s RESULT: %d\n";
 	char expr[] = "1+1*3+5-6#";
 

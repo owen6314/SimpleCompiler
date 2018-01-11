@@ -1,12 +1,12 @@
 grammar SimpleC;
 
-start : function ;
+start : (function)* ;
 
-function : mType mID '(' params ')' '{' content '}' ;
+function : mType mID '(' formalParams ')' '{' content '}' ;
 
-params : param | param ',' params ;
+formalParams : formalParam | formalParam ',' formalParams |;
 
-param : mType mID ;
+formalParam : mType mID ;
 
 mType : 'int' | 'char' ;
 
@@ -53,6 +53,7 @@ arrayNoInit : mID '[' ']' ;
 exprFunc : strlenFunc
 		 | atoiFunc
 		 | isdigitFunc
+     | customFunc
 		 ;
 
 // 在程序中用到的三个函数
@@ -62,6 +63,12 @@ atoiFunc : 'atoi' '(' mID ')' ;
 
 isdigitFunc : 'isdigit' '(' mID ')' ;
 
+customFunc : mID '(' actualParams ')' ;
+
+actualParams : actualParam | actualParam ',' actualParams |;
+
+actualParam : mID | mInt ;
+
 declareStat : mType (mID|designator) ';'
             | mType (mID|designator|arrayNoInit) '=' expr ';'
             ;
@@ -69,14 +76,14 @@ declareStat : mType (mID|designator) ';'
 assignStat : (mID | designator) '=' expr ';' ;
 
 // 返回语句
-returnStat : 'return' mInt ';' ;
+returnStat : 'return' expr ';' ;
 
 // 打印语句
 // 参数为字符串或多个变量
 printfStat : 'printf' '(' mString ')' ';'
            | 'printf' '(' mID (',' mID)* ')' ';'
            ;
-           
+
 mOperator : OPERATOR;
 
 mConnector : CONNECTOR;
