@@ -1,4 +1,3 @@
-# Generated from /Users/aglax2357/Projects/antlr_parse/src/SimpleC.g4 by ANTLR 4.7
 from antlr4 import *
 
 if __name__ is not None and "." in __name__:
